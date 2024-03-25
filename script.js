@@ -1,71 +1,22 @@
-let firstNumber = '';
-let secondNumber = '';
-let currentOperator = '';
-let displayValue = '';
+let input = document.getElementById("inputBox");
+let buttons = document.querySelectorAll("button");
 
-function updateDisplay() {
-  document.getElementById('display').value = displayValue;
-}
-
-function appendNumber(number) {
-  if (currentOperator === '') {
-    firstNumber += number;
-    displayValue = firstNumber;
-  } else {
-    secondNumber += number;
-    displayValue = secondNumber;
-  }
-  updateDisplay();
-}
-
-function appendDecimal() {
-  if (currentOperator === '') {
-    if (!firstNumber.includes('.')) {
-      firstNumber += '.';
-      displayValue = firstNumber;
-      updateDisplay();
-    }
-  } else {
-    if (!secondNumber.includes('.')) {
-      secondNumber += '.';
-      displayValue = secondNumber;
-      updateDisplay();
-    }
-  }
-}
-
-function setOperator(operator) {
-  if (firstNumber !== '' && secondNumber !== '') {
-    calculate();
-  }
-  currentOperator = operator;
-}
-
-function clearDisplay() {
-  firstNumber = '';
-  secondNumber = '';
-  currentOperator = '';
-  displayValue = '';
-  updateDisplay();
-}
-
-function calculate() {
-  if (currentOperator === '+') {
-    displayValue = parseFloat(firstNumber) + parseFloat(secondNumber);
-  } else if (currentOperator === '-') {
-    displayValue = parseFloat(firstNumber) - parseFloat(secondNumber);
-  } else if (currentOperator === '*') {
-    displayValue = parseFloat(firstNumber) * parseFloat(secondNumber);
-  } else if (currentOperator === '/') {
-    if (parseFloat(secondNumber) === 0) {
-      displayValue = "Error: Division by zero";
+let string = "";
+let arr = Array.from(buttons);
+arr.forEach((button) => {
+  button.addEventListener("click", (e) => {
+    if (e.target.innerHTML == "=") {
+      string = eval(string);
+      input.value = string;
+    } else if (e.target.innerHTML == "AC") {
+      string = "";
+      input.value = string;
+    } else if (e.target.innerHTML == "DEL") {
+      string = string.substring(0, string.length - 1);
+      input.value = string;
     } else {
-      displayValue = parseFloat(firstNumber) / parseFloat(secondNumber);
+      string += e.target.innerHTML;
+      input.value = string;
     }
-  }
-  displayValue = displayValue.toFixed(2);
-  firstNumber = displayValue.toString();
-  secondNumber = '';
-  currentOperator = '';
-  updateDisplay();
-}
+  });
+});
